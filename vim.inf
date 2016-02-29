@@ -1,0 +1,84 @@
+[Defines]
+	INF_VERSION                    = 1.25
+	BASE_NAME                      = vim
+	FILE_GUID                      = d499534e-c438-40e3-94c8-a24be1f3bd4a
+	MODULE_TYPE                    = UEFI_APPLICATION
+	VERSION_STRING                 = 1.0
+	ENTRY_POINT                    = ShellCEntryLib
+
+[Sources]
+	src/efivim.c
+	vim/src/buffer.c
+	vim/src/blowfish.c
+	vim/src/charset.c
+	vim/src/crypt.c
+	vim/src/crypt_zip.c
+	vim/src/diff.c
+	vim/src/digraph.c
+	vim/src/edit.c
+	vim/src/eval.c
+	vim/src/ex_cmds.c
+	vim/src/ex_cmds2.c
+	vim/src/ex_docmd.c
+	vim/src/ex_eval.c
+	vim/src/ex_getln.c
+	vim/src/fileio.c
+	vim/src/fold.c
+	vim/src/getchar.c
+	vim/src/hardcopy.c
+	vim/src/hashtab.c
+	vim/src/if_cscope.c
+	vim/src/if_lua.c
+	vim/src/if_xcmdsrv.c
+	vim/src/mark.c
+	vim/src/memline.c
+	vim/src/menu.c
+	vim/src/message.c
+	vim/src/misc1.c
+	vim/src/misc2.c
+	vim/src/move.c
+	vim/src/mbyte.c
+	vim/src/normal.c
+	vim/src/ops.c
+	vim/src/option.c
+	vim/src/popupmnu.c
+	vim/src/quickfix.c
+	vim/src/regexp.c
+	vim/src/screen.c
+	vim/src/search.c
+	vim/src/sha256.c
+	vim/src/spell.c
+	vim/src/syntax.c
+	vim/src/tag.c
+	vim/src/term.c
+	vim/src/ui.c
+	vim/src/undo.c
+	vim/src/window.c
+	vim/src/json.c
+	vim/src/main.c
+	vim/src/memfile.c
+	vim/src/version.c
+
+[Packages]
+	StdLib/StdLib.dec
+	MdePkg/MdePkg.dec
+
+	vim.dec
+ 
+[LibraryClasses]
+	UefiLib
+	LibC
+	LibString
+	LibStdio
+	LibGdtoa
+	LibMath
+	LibWchar
+	LibGen
+	LibTime
+	LibNetUtil
+	DevMedia
+	LuaLib
+ 
+[BuildOptions]
+	GCC:*_*_X64_CC_FLAGS == -g -fshort-wchar -fno-strict-aliasing -Wall -Werror -Wno-switch -Wno-array-bounds -ffunction-sections -fdata-sections -c -include AutoGen.h -fno-common -DSTRING_ARRAY_NAME=vimStrings -m64 -fno-stack-protector "-DEFIAPI=__attribute__((ms_abi))" -DNO_BUILTIN_VA_FUNCS -mno-red-zone -Wno-address -mcmodel=large -fno-asynchronous-unwind-tables -Wno-address -Wno-unused-but-set-variable -fno-builtin -include include/efivim.h -DFEAT_BIG -DFEAT_BROWSE -DFEAT_LUA -DHAVE_MEMMOVE -DHAVE_PUTENV -DHAVE_CONFIG_H -DVIM_SIZEOF_INT=4 -DSPACE_IN_FILENAME -DBACKSLASH_IN_FILENAME -DHAVE_ST_MODE -DCASE_INSENSITIVE_FILENAME -DDEFAULT_TERM='(char_u*)"vt320"'
+

@@ -1,0 +1,10 @@
+[Defines]
+	DEC_SPECIFICATION	= 1.25
+	PACKAGE_NAME		= vim
+	PACKAGE_GUID		= d499534e-c438-40e3-94c8-a24be1f3bd4a
+	PACKAGE_VERSION		= 1.0
+
+[Includes.common]
+	include
+	vim/src/proto
+
