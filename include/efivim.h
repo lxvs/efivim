@@ -17,6 +17,7 @@
 
 #define SYNTAX_FNAME "fs0:\\vim\\vimfiles\\syntax\\%s.vim"
 #define SYS_VIMRC_FILE "fs0:\\vim\\vimfiles\\vimrc"
+#define VIM_DEFAULTS_FILE "fs0:\\vim\\vimfiles\\defaults.vim"
 
 #define EVIM_FILE "evim.vim"
 #define VIMRC_FILE ".vimrc"
