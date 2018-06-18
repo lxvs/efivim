@@ -51,7 +51,7 @@ edk2:
 	make -C edk2/BaseTools
 
 clean:
-	rm -f $(EFIBIN)
+	rm -f $(EFIBIN) $(EFIIMG)
 	rm -rf $(BUILDDIR)
 
 nuke:	clean
