@@ -4,7 +4,8 @@ TOOLCHAIN=GCC49
 PLATFORM=vim.dsc
 MODULE=vim.inf
 
-SGDISK=/usr/sbin/sgdisk
+SGDISK=/sbin/sgdisk
+OVMF=/usr/share/ovmf/OVMF.fd
 
 EFIBIN=vim.efi
 EFIIMG=vim.img
@@ -16,7 +17,7 @@ $(EFIBIN):	$(APP)
 	cp $? $@
 
 qemu: $(EFIIMG)
-	qemu-system-x86_64 -bios efi-bios.bin -enable-kvm -serial mon:stdio -net none -display sdl -drive format=raw,file=$?
+	qemu-system-x86_64 -bios $(OVMF) -enable-kvm -serial mon:stdio -net none -display sdl -drive format=raw,file=$?
 
 $(EFIIMG):	$(APP)
 	# 48M
@@ -35,15 +36,17 @@ $(EFIIMG):	$(APP)
 	touch $@
 
 $(APP):	edk2 vim
-	pushd edk2; WORKSPACE="$(PWD)/edk2" PACKAGES_PATH="$(PWD)" source ./edksetup.sh; popd; build -v -a $(ARCH) -p $(PLATFORM) -m $(MODULE) -b $(TARGET) -t $(TOOLCHAIN)
+	bash -c 'pushd edk2; export WORKSPACE="$(PWD)/edk2" PACKAGES_PATH="$(PWD)"; source ./edksetup.sh; popd; build -v -a $(ARCH) -p $(PLATFORM) -m $(MODULE) -b $(TARGET) -t $(TOOLCHAIN) '
 
 vim:
 	git clone https://github.com/vim/vim.git
+	git checkout 10b369f67064cee91a5eb41383a694162c5c5e73
 	# we didn't run autoconf, so make the source cope.
 	touch vim/src/auto/config.h
 
 edk2:
 	git clone https://github.com/tianocore/edk2.git
+	git checkout 65ed9d7ff55ad5c149e713d73b8d52ee8cbce601
 	cd edk2
 	make -C edk2/BaseTools
 

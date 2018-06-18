@@ -211,7 +211,7 @@ int
 mch_has_exp_wildcard(unsigned char *p)
 {
 	where("p %s", p);
-	for (; *p; mb_ptr_adv(p)){
+	for (; *p;  mb_ptr_adv(p)){
 		if (*p == '\\' && p[1] != NUL)
 			++p;
 		else if (vim_strchr((char_u *) "*?[{'", *p) != NULL)
