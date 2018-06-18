@@ -40,14 +40,13 @@ $(APP):	edk2 vim
 
 vim:
 	git clone https://github.com/vim/vim.git
-	git checkout 10b369f67064cee91a5eb41383a694162c5c5e73
+	cd vim && git checkout 10b369f67064cee91a5eb41383a694162c5c5e73
 	# we didn't run autoconf, so make the source cope.
 	touch vim/src/auto/config.h
 
 edk2:
 	git clone https://github.com/tianocore/edk2.git
-	git checkout 65ed9d7ff55ad5c149e713d73b8d52ee8cbce601
-	cd edk2
+	cd edk2 && git checkout 65ed9d7ff55ad5c149e713d73b8d52ee8cbce601
 	make -C edk2/BaseTools
 
 clean:
