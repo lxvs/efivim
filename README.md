@@ -8,13 +8,11 @@ at the time of writing, you can build VIM.EFI on debian 9.4.
 
 you will need at least git, make and gcc. **TODO**: document what's needed
 
-to build EFI.VIM clone this repo and execute `make`.
+to build VIM.EFI clone this repo and execute `make`.
 
 ## running
 
 to run VIM.EFI, copy `vim.efi` to the ESP and execute it from your UEFI shell.
-
-alternately, if you simply wish to run vim and nothing else, you may copy `vim.efi` to `efi/boot/bootx64.efi` in the ESP where it will be executed automatically.
 
 to try out VIM.EFI in qemu, execute `make qemu`.
 

@@ -46,7 +46,7 @@ void mch_early_init(void);
 int mch_init(void);
 void mch_exit(int);
 void mch_suspend(void);
-void mch_breakcheck(void);
+void mch_breakcheck(int);
 void mch_hide(unsigned char *name);
 
 int mch_get_shellsize(void);

@@ -13,10 +13,12 @@
 	vim/src/charset.c
 	vim/src/crypt.c
 	vim/src/crypt_zip.c
+	vim/src/dict.c
 	vim/src/diff.c
 	vim/src/digraph.c
 	vim/src/edit.c
 	vim/src/eval.c
+	vim/src/evalfunc.c
 	vim/src/ex_cmds.c
 	vim/src/ex_cmds2.c
 	vim/src/ex_docmd.c
@@ -30,6 +32,7 @@
 	vim/src/if_cscope.c
 	vim/src/if_lua.c
 	vim/src/if_xcmdsrv.c
+	vim/src/list.c
 	vim/src/mark.c
 	vim/src/memline.c
 	vim/src/menu.c
@@ -48,6 +51,7 @@
 	vim/src/search.c
 	vim/src/sha256.c
 	vim/src/spell.c
+	vim/src/spellfile.c
 	vim/src/syntax.c
 	vim/src/tag.c
 	vim/src/term.c
@@ -57,6 +61,7 @@
 	vim/src/json.c
 	vim/src/main.c
 	vim/src/memfile.c
+	vim/src/userfunc.c
 	vim/src/version.c
 
 [Packages]
@@ -64,7 +69,7 @@
 	MdePkg/MdePkg.dec
 
 	vim.dec
- 
+
 [LibraryClasses]
 	UefiLib
 	LibC

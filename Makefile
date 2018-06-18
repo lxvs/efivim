@@ -1,4 +1,5 @@
-TARGET=DEBUG
+#TARGET=DEBUG
+TARGET=RELEASE
 ARCH=X64
 TOOLCHAIN=GCC49
 PLATFORM=vim.dsc
@@ -9,9 +10,9 @@ OVMF=/usr/share/ovmf/OVMF.fd
 
 EFIBIN=vim.efi
 EFIIMG=vim.img
-BUILDDIR=edk2/Build/vim/$(TARGET)_$(TOOLCHAIN)/$(ARCH)
+BUILDDIR=edk2/Build/AppPkg/$(TARGET)_$(TOOLCHAIN)/$(ARCH)
 
-APP=$(BUILDDIR)/vim/$(TARGET)/$(EFIBIN)
+APP=$(BUILDDIR)/$(EFIBIN)
 
 $(EFIBIN):	$(APP)
 	cp $? $@
@@ -30,9 +31,9 @@ $(EFIIMG):	$(APP)
 		$(SGDISK) -p $@ && \
 		mformat -i $@@@1M -v EFI -F -h 32 -t 44 -n 64 -c 1 && \
 		mmd -i $@@@1M efi && \
-		mmd -i $@@@1M efi/boot \
+		mmd -i $@@@1M efi/tools \
 	)
-	mcopy -o -i $@@@1M $(APP) ::efi/boot/bootx64.efi
+	mcopy -o -i $@@@1M $(APP) ::efi/tools/vim.efi
 	touch $@
 
 $(APP):	edk2 vim
@@ -40,13 +41,13 @@ $(APP):	edk2 vim
 
 vim:
 	git clone https://github.com/vim/vim.git
-	cd vim && git checkout 10b369f67064cee91a5eb41383a694162c5c5e73
+	cd vim && git checkout 0366c0161e988e32420d2f37111a60129684905b
 	# we didn't run autoconf, so make the source cope.
 	touch vim/src/auto/config.h
 
 edk2:
 	git clone https://github.com/tianocore/edk2.git
-	cd edk2 && git checkout 65ed9d7ff55ad5c149e713d73b8d52ee8cbce601
+	cd edk2 && git checkout 1f739a851ce8ea8c9c4d9c4c7a5862fd44ab6ab4
 	make -C edk2/BaseTools
 
 clean:

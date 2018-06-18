@@ -2,6 +2,7 @@
 #include <Uefi/UefiSpec.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/UefiLib.h>
+#include <Library/DebugLib.h>
 
 #include <sys/select.h>
 #include <sys/termios.h>
@@ -9,7 +10,7 @@
 #include "efivim.h"
 #include "vim.h"
 
-#define where(format, ...) do{fprintf(stderr, "\n%s> " format "\n", __func__, ##__VA_ARGS__);}while(0)
+#define where(format, ...) do{DEBUG((EFI_D_INFO, "\n%s> " format "\n", __func__, ##__VA_ARGS__));}while(0)
 
 EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL    *sto;
 UINTN	cols;
@@ -137,7 +138,7 @@ mch_suspend(void)
 }
 
 void
-mch_breakcheck(void)
+mch_breakcheck(int force)
 {
 }
 
@@ -196,7 +197,7 @@ int
 mch_has_wildcard(unsigned char *p)
 {
 	where("p %s", p);
-	for(; *p; mb_ptr_adv(p)){
+	for(; *p; MB_PTR_ADV(p)){
 		if(*p == '\\' && p[1] != NUL){
 			++p;
 		} else if(vim_strchr((char_u *)"*?[{`'$", *p) != NULL ||
@@ -211,7 +212,7 @@ int
 mch_has_exp_wildcard(unsigned char *p)
 {
 	where("p %s", p);
-	for (; *p;  mb_ptr_adv(p)){
+	for (; *p;  MB_PTR_ADV(p)){
 		if (*p == '\\' && p[1] != NUL)
 			++p;
 		else if (vim_strchr((char_u *) "*?[{'", *p) != NULL)
@@ -812,7 +813,7 @@ slash_adjust(unsigned char *p)
 	while(*p){
 		if(*p == psepcN)
 			*p = psepc;
-		mb_ptr_adv(p);
+		MB_PTR_ADV(p);
 	}
 }
 
