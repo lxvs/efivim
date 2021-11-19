@@ -1,7 +1,7 @@
 #TARGET=DEBUG
 TARGET=RELEASE
 ARCH=X64
-TOOLCHAIN=GCC49
+TOOLCHAIN=GCC5
 PLATFORM=vim.dsc
 MODULE=vim.inf
 
@@ -18,7 +18,7 @@ $(EFIBIN):	$(APP)
 	cp $? $@
 
 qemu: $(EFIIMG)
-	qemu-system-x86_64 -bios $(OVMF) -enable-kvm -serial mon:stdio -net none -display sdl -drive format=raw,file=$?
+	qemu-system-x86_64 -bios $(OVMF) -enable-kvm -serial mon:stdio -net none -drive format=raw,file=$?
 
 $(EFIIMG):	$(APP)
 	# 48M
@@ -37,25 +37,37 @@ $(EFIIMG):	$(APP)
 	touch $@
 
 $(APP):	edk2 vim
-	bash -c 'pushd edk2; export WORKSPACE="$(PWD)/edk2" PACKAGES_PATH="$(PWD)"; source ./edksetup.sh; popd; build -v -a $(ARCH) -p $(PLATFORM) -m $(MODULE) -b $(TARGET) -t $(TOOLCHAIN) '
+	bash -c 'pushd edk2; \
+		export WORKSPACE="$(PWD)/edk2" PACKAGES_PATH="$(PWD):$(PWD)/edk2-libc"; \
+		source ./edksetup.sh; \
+		: hack to patch out -Werror for lua build; \
+		sed -i -e "/GCC_ALL_CC_FLAGS/s/-Werror //g" Conf/tools_def.txt; \
+		popd; \
+		build -n 4 -a $(ARCH) -p $(PLATFORM) -m $(MODULE) -b $(TARGET) -t $(TOOLCHAIN); \
+	'
 
-vim:
-	git clone https://github.com/vim/vim.git
-	cd vim && git checkout 0366c0161e988e32420d2f37111a60129684905b
-	# we didn't run autoconf, so make the source cope.
-	touch vim/src/auto/config.h
+.PHONY: vim
+vim:	vim/src/auto/config.h
 
-edk2:
-	git clone https://github.com/tianocore/edk2.git
-	cd edk2 && git checkout 1f739a851ce8ea8c9c4d9c4c7a5862fd44ab6ab4
+vim/src/auto/config.h:
+	touch $@
+
+edk2: .edk2
+	touch $@
+
+.edk2:
 	make -C edk2/BaseTools
+	touch $@
 
 clean:
 	rm -f $(EFIBIN) $(EFIIMG)
 	rm -rf $(BUILDDIR)
 
 nuke:	clean
-	rm -rf vim edk2
+	rm -f .edk2
+	git -C edk2 clean -df
+	rm -f vim/src/auto/config.h
+	git -C vim clean -df
 
 .PHONY:	qemu clean nuke
 

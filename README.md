@@ -4,17 +4,23 @@ this repo is a hack to run [Vim](https://github.com/vim/vim) in a UEFI environme
 
 ## building
 
-at the time of writing, you can build VIM.EFI on debian 9.4.
+at the time of writing, you can build VIM.EFI on debian 11 (bullseye).
 
-you will need at least git, make and gcc. **TODO**: document what's needed
+you will need at least git, make and gcc. **TODO**: finish documenting what's needed
+
+	sudo apt install build-essential nasm mtools gdisk
 
 to build VIM.EFI clone this repo and execute `make`.
+
+	git clone --depth=1 --recursive https://github.com/mischief/efivim
+	cd efivim
+	make
 
 ## running
 
 to run VIM.EFI, copy `vim.efi` to the ESP and execute it from your UEFI shell.
 
-to try out VIM.EFI in qemu, execute `make qemu`.
+to try out VIM.EFI in qemu, execute `make qemu`, and type 'vim' in the UEFI shell prompt.
 
 ## credits
 

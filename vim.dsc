@@ -7,7 +7,7 @@
 		DEFINE DEBUG_PROPERTY_MASK		= 0xFF
 	!endif
 
-!include edk2/AppPkg/AppPkg.dsc
+!include edk2-libc/AppPkg/AppPkg.dsc
 
 [LibraryClasses]
 	!if $(TARGET) == "DEBUG"
