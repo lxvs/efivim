@@ -20,6 +20,9 @@ $(EFIBIN):	$(APP)
 qemu: $(EFIIMG)
 	qemu-system-x86_64 -bios $(OVMF) -enable-kvm -serial mon:stdio -net none -drive format=raw,file=$?
 
+$(EFIIMG).gz: $(EFIIMG)
+	gzip -9 < $< > $@
+
 $(EFIIMG):	$(APP)
 	# 48M
 	test -e $@ || (dd if=/dev/zero of=$@ bs=512 count=93750 2>/dev/null && \

@@ -1,5 +1,7 @@
+.edk2
 edk2
 vim
 vim.efi
 vim.img
+vim.img.gz
 

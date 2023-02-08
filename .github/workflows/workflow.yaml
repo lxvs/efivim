@@ -1,0 +1,36 @@
+name: VIM.EFI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: variables
+        id: variables
+        run: echo "name=$(git describe --always --tags)" >> $GITHUB_OUTPUT
+
+      - name: dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential nasm mtools gdisk
+
+      - name: build
+        run:
+          make vim.efi vim.img.gz
+
+      - name: release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          name: ${{ steps.variables.outputs.name }}
+          tag_name: ${{ steps.variables.outputs.name }}
+          files: |
+            vim.efi
+            vim.img.gz
+
